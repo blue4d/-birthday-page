@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+<meta charset="UTF-8">
+<title>Birthday 💖</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', cursive;
+    background: linear-gradient(135deg, #ff9ecf, #c084fc);
+    color: white;
+    text-align: center;
+    overflow: hidden;
+    transition: background 5s linear;
+}
+
+.container {
+    padding: 40px;
+}
+
+h1 {
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px white; }
+    to { text-shadow: 0 0 25px pink; }
+}
+
+.big-heart {
+    font-size: 50px;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.page {
+    display: none;
+    opacity: 0;
+    transition: 0.5s;
+}
+
+.page.active {
+    display: block;
+    opacity: 1;
+}
+
+button {
+    background: #ff4d88;
+    border: none;
+    padding: 12px 25px;
+    margin: 10px;
+    border-radius: 20px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 20px pink;
+}
+
+/* القلوب العادية */
+.heart {
+    position: fixed;
+    bottom: -10px;
+    font-size: 20px;
+    animation: float 5s linear infinite;
+    color: #ff69b4;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-100vh); opacity: 0; }
+}
+
+/* فقاعات عند الضغط على الأزرار */
+.bubble {
+    position: absolute;
+    font-size: 20px;
+    animation: bubbleUp 1.2s ease-out forwards;
+}
+
+@keyframes bubbleUp {
+    0% { opacity:1; transform: translateY(0) scale(1);}
+    100% { opacity:0; transform: translateY(-50px) scale(1.5);}
+}
+
+/* انفجار القلوب الكبير */
+.explosion-heart {
+    position: absolute;
+    font-size: 25px;
+    opacity: 1;
+    animation: explode 1s forwards;
+}
+
+@keyframes explode {
+    0% { transform: translate(0,0) scale(1); opacity:1;}
+    100% { transform: translate(var(--x), var(--y)) scale(2); opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Happy Birthday 💕</h1>
+<div class="big-heart">💖</div>
+
+<!-- الصفحة الرئيسية -->
+<div class="page active" id="home">
+    <p> Choose one of the buttons 💖</p>
+    <button onclick="goToPage('message1')">From my heart to u 💌</button>
+    <button onclick="goToPage('surprise')">for you 🎶</button>
+</div>
+
+<!-- الرسالة جزء 1 -->
+<div class="page" id="message1">
+    <p id="typing"></p>
+    <button onclick="goToPage('message2')">Next ➡️</button>
+</div>
+
+<!-- الرسالة جزء 2 -->
+<div class="page" id="message2">
+    <p id="typing2"></p>
+    <button onclick="goToPage('home')">back 🔙</button>
+</div>
+
+<!-- صفحة المفاجأة مع الفيديو -->
+<div class="page" id="surprise">
+    <h2>🎂 SURPRISE 🎂</h2>
+    <p> Happy birthday to my person 💖</p>
+    <div style="position: relative; display: inline-block;">
+        <iframe id="videoPlayer" width="400" height="250"
+        src="https://www.youtube.com/embed/1QYiFODdx10?autoplay=1&mute=1"
+        frameborder="0" allow="autoplay; fullscreen" allowfullscreen
+        style="border-radius: 15px; transform: scale(1); transition: 0.5s;">
+        </iframe>
+    </div>
+    <br><br>
+    <button onclick="goToPage('home')"> back 🔙</button>
+</div>
+
+<script>
+// الخلفية تتغير تدريجياً
+let colors = ["#ff9ecf","#c084fc","#fbc2eb","#a18cd1","#ffb347","#ffcc33"];
+let i = 0;
+setInterval(()=>{
+    document.body.style.background = `linear-gradient(135deg, ${colors[i]}, ${colors[(i+1)%colors.length]})`;
+    i = (i+1) % colors.length;
+}, 5000);
+
+// القلوب العادية المتطايرة
+setInterval(() => {
+    let heart = document.createElement("div");
+    heart.className = "heart";
+    let colorsHeart = ["#ff6b81","#ffb6c1","#ffffff","#ff69b4"];
+    heart.style.color = colorsHeart[Math.floor(Math.random()*colorsHeart.length)];
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (15 + Math.random()*20) + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 5000);
+}, 300);
+
+// فقاعات عند الضغط على الأزرار
+document.querySelectorAll('button').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+        let bubble = document.createElement('div');
+        bubble.className = 'bubble';
+        bubble.style.left = e.clientX + "px";
+        bubble.style.top = e.clientY + "px";
+        bubble.innerHTML = "💖";
+        document.body.appendChild(bubble);
+        setTimeout(()=>bubble.remove(),1200);
+    });
+});
+
+// الرسائل
+const text1 = "اليوم مو يوم عادي..اليوم يومك, اليوم يلي انولدت فيه الشخص الوحيد و المفضل لي من هاي الدنيا..كنت منولده قبلك ب 11 شهر بس م بلشت اعيش غير وقت اخذتي انفاسك على هاي الدنيا بنفس هاذ اليوم قبل 22 سنه..من أول يوم عرفتك م كنت بعرف انه هنكون بذا القرب..يمكن لأني حسيت اني مو طايقتك؟ هههههههههههههه بس بعدين وقت جيتيلي وقت فتحت حساب انستا و حكيتي معي و بلشنا حكي شوي شوي صرت اتعلق فيكِ بشكل انا نفسي انصدمت منه..كنت حرفياً احب وقتي معك و احب وجودك و حكيك..قلبي كان يدق وقت اشوفكم تايبينغ و كنت اتحمس لشو هتحكي و لحد الأن ترا بس هسا صرت افضل اسمع صوتك و ضحكتك لأنهم فعلاُ يحسنوا يومي ...يوم صرنا نتقرب لبعرضنا شوي شوي حسيت إن في شخص يفهمني بدون ما احكي..شخص يمشي ع جوي و شخص بريحني جد..رندي تدري انه ضحكتك بالنسبة إلي مش بس ضحكة، هي شي ينور كل العتمه يلي بحياتي بتخليني احس انه خلاص انا مو محتاجه ايشي بالدنيا و فعلاً بطلت محتاجه لأنك معي..كل عام و انتِ بخير و شخصي و حياتي و حبيبتي و كل عام و انتِ معي..بحبكك💜💛";
+let i1=0;
+function typeText1(){
+    let el=document.getElementById("typing");
+    el.innerHTML="";
+    i1=0;
+    let interval = setInterval(()=>{
+        let span = document.createElement("span");
+        span.style.color = "#ffffff";
+        span.textContent = text1.charAt(i1);
+        el.appendChild(span);
+        i1++;
+        if(i1>=text1.length) clearInterval(interval);
+    },30);
+}
+
+const text2 = "بتذكر كل المرات يلي قضيناها سوا و سهرنا و ضحكنا و لعبنا و جد يحظي لوجودك معي و بحياتي..كل شي صغير لك له معنى عندي و لي و كلشي بحبه فيكِ بشكل م بتتخيليه جد..انتِ الشخص الوحيد يلي قادر يخليني احس انه قلبي مليان سعاده و جد م بمزح..بتمنالك سنه حلوه و بتجنن و مليانه حب و سعاده ع قد م بتعطيني انتِ و بتخليني احس و اكثر حتى..بتمنى تعرفي دايماً كم انك مهمه بالنسبه إلي و اني محظوظه كثير لأني عندي شخص زيك بحياتي والأخير: تعرفي انه شو م صار و شو م بعدنا او قل حكينا او هذي المسافات يلي بينا كلهم م بهموني و م هيبعدوني عنك و رح تبقي دايماً اقرب و اهم و الشخص الوحيد لقلبي..كل عام و انتِ بألففف خير رنودتي يا حصتي من الدنيا و يا قلبي كله..احبك و الله يخليكِ لي دايماً";
+let i2=0;
+function typeText2(){
+    let el=document.getElementById("typing2");
+    el.innerHTML="";
+    i2=0;
+    let interval = setInterval(()=>{
+        let span = document.createElement("span");
+        span.style.color = "#ffffff";
+        span.textContent = text2.charAt(i2);
+        el.appendChild(span);
+        i2++;
+        if(i2>=text2.length) clearInterval(interval);
+    },30);
+}
+
+// **دالة الانتقال مع انفجار القلوب**
+function goToPage(pageId){
+    // انفجار قلوب عند الانتقال
+    for(let j=0;j<50;j++){
+        let h=document.createElement("div");
+        h.className="explosion-heart";
+        h.style.left=window.innerWidth/2 + "px";
+        h.style.top=window.innerHeight/2 + "px";
+        let angle = Math.random()*2*Math.PI;
+        let radius = 100 + Math.random()*100;
+        h.style.setProperty('--x', radius*Math.cos(angle)+'px');
+        h.style.setProperty('--y', radius*Math.sin(angle)+'px');
+        let colorsHeart = ["#ff6b81","#ffb6c1","#ffffff","#ff69b4"];
+        h.style.color = colorsHeart[Math.floor(Math.random()*colorsHeart.length)];
+        h.textContent = "💖";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),1000);
+    }
+
+    // الانتقال بعد قليل
+    setTimeout(()=>{
+        document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+
+        if(pageId==='message1') typeText1();
+        if(pageId==='message2') typeText2();
+
+        if(pageId==='surprise'){
+            let video=document.getElementById("videoPlayer");
+            video.style.transform="scale(1.1)";
+            document.querySelectorAll('.heart').forEach(h=>h.style.fontSize="30px");
+        } else {
+            let video=document.getElementById("videoPlayer");
+            if(video) video.style.transform="scale(1)";
+            document.querySelectorAll('.heart').forEach(h=>h.style.fontSize="20px");
+        }
+    },300); // 0.3 ثانية لتظهر الانفجار قبل الانتقال
+}
+</script>
+
+</body>
+</html>
